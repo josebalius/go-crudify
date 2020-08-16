@@ -5,39 +5,39 @@ import (
 	"github.com/josebalius/go-crudify/adapters/router"
 )
 
-type Option func(opts *options) error
+type Option func(opts *Options) error
 
-type options struct {
-	router         router.Router
-	db             database.Database
-	model          interface{}
-	controllerName string
+type Options struct {
+	Router         router.Router
+	DB             database.Database
+	Model          interface{}
+	ControllerName string
 }
 
 func WithRouter(router router.Router) Option {
-	return func(opts *options) error {
-		opts.router = router
+	return func(opts *Options) error {
+		opts.Router = router
 		return nil
 	}
 }
 
 func WithDatabase(db database.Database) Option {
-	return func(opts *options) error {
-		opts.db = db
+	return func(opts *Options) error {
+		opts.DB = db
 		return nil
 	}
 }
 
 func WithModel(model interface{}) Option {
-	return func(opts *options) error {
-		opts.model = model
+	return func(opts *Options) error {
+		opts.Model = model
 		return nil
 	}
 }
 
 func WithControllerName(controllerName string) Option {
-	return func(opts *options) error {
-		opts.controllerName = controllerName
+	return func(opts *Options) error {
+		opts.ControllerName = controllerName
 		return nil
 	}
 }

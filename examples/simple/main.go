@@ -30,8 +30,8 @@ func main() {
 	db.AutoMigrate(&User{})
 
 	if err := crudify.NewEndpoint(
-		crudify.WithRouter(routerAdapter.NewEchoRouter(e)),
-		crudify.WithDatabase(databaseAdapter.NewGormAdapter(db, &User{})),
+		crudify.WithRouter(routerAdapter.NewEcho(e)),
+		crudify.WithDatabase(databaseAdapter.NewGorm(db, &User{})),
 		crudify.WithModel(&User{}),
 	); err != nil {
 		log.Fatal(err)

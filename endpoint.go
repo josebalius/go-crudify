@@ -6,18 +6,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-type endpoint struct {
-	options        *options
-	controllerName string
+type Endpoint struct {
+	Options        *Options
+	ControllerName string
 }
 
 func NewEndpoint(opts ...Option) error {
-	e := &endpoint{
-		options: &options{},
+	e := &Endpoint{
+		Options: &Options{},
 	}
 
 	for _, o := range opts {
-		if err := o(e.options); err != nil {
+		if err := o(e.Options); err != nil {
 			return errors.Wrap(err, "apply option")
 		}
 	}
@@ -26,10 +26,10 @@ func NewEndpoint(opts ...Option) error {
 		return errors.Wrap(err, "validate options")
 	}
 
-	if e.options.controllerName != "" {
-		e.controllerName = e.options.controllerName
+	if e.Options.ControllerName != "" {
+		e.ControllerName = e.Options.ControllerName
 	} else {
-		e.controllerName = e.database().TableName()
+		e.ControllerName = e.database().TableName()
 	}
 
 	e.createRouterEndpoints()
@@ -37,19 +37,19 @@ func NewEndpoint(opts ...Option) error {
 	return nil
 }
 
-func (e *endpoint) validateOptions() error {
+func (e *Endpoint) validateOptions() error {
 	switch {
-	case e.options.router == nil:
+	case e.Options.Router == nil:
 		return errors.New("A router is required to create an endpoint")
-	case e.options.db == nil:
+	case e.Options.DB == nil:
 		return errors.New("A database is required to create an endpoint")
-	case e.options.model == nil:
+	case e.Options.Model == nil:
 		return errors.New("A model is required to create an endpoint")
-	case e.options.model != nil:
+	case e.Options.Model != nil:
 		// TODO: move this out of validation
-		model := reflect.ValueOf(e.options.model)
+		model := reflect.ValueOf(e.Options.Model)
 		if model.Kind() == reflect.Ptr {
-			e.options.model = model.Elem().Interface()
+			e.Options.Model = model.Elem().Interface()
 		}
 	}
 

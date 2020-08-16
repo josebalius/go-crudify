@@ -6,28 +6,28 @@ import (
 	"github.com/josebalius/go-crudify/adapters/database"
 )
 
-func (e *endpoint) database() database.Database {
-	return e.options.db
+func (e *Endpoint) database() database.Database {
+	return e.Options.DB
 }
 
-func (e *endpoint) model() interface{} {
-	return e.options.model
+func (e *Endpoint) model() interface{} {
+	return e.Options.Model
 }
 
-func (e *endpoint) modelType() reflect.Type {
+func (e *Endpoint) modelType() reflect.Type {
 	return reflect.TypeOf(e.model())
 }
 
-func (e *endpoint) modelSlice() reflect.Value {
+func (e *Endpoint) modelSlice() reflect.Value {
 	return reflect.MakeSlice(reflect.SliceOf(e.modelType()), 0, 0)
 }
 
-func (e *endpoint) newModelPtr() interface{} {
+func (e *Endpoint) newModelPtr() interface{} {
 	model := reflect.New(e.modelType())
 	return model.Interface()
 }
 
-func (e *endpoint) newModelSlice() interface{} {
+func (e *Endpoint) newModelSlice() interface{} {
 	modelSlice := e.modelSlice()
 	slice := reflect.New(modelSlice.Type())
 	slice.Elem().Set(modelSlice)

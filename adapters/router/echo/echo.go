@@ -9,7 +9,7 @@ type echoRouter struct {
 	echo *echo.Echo
 }
 
-func NewEchoRouter(e *echo.Echo) router.Router {
+func NewEcho(e *echo.Echo) router.Router {
 	return &echoRouter{e}
 }
 

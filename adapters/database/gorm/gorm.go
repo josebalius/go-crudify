@@ -10,7 +10,7 @@ type gormAdapter struct {
 	model interface{}
 }
 
-func NewGormAdapter(db *gorm.DB, model interface{}) database.Database {
+func NewGorm(db *gorm.DB, model interface{}) database.Database {
 	return &gormAdapter{db, model}
 }
 
