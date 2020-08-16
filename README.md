@@ -48,6 +48,16 @@ func main() {
 }
 ```
 
+This create the following endpoints:
+
+```
+GET /users
+POST /users
+GET /users/:id
+PUT /users/:id
+DELETE /users/:id
+```
+
 ## TODOs
 
 - [ ] Setup go.mod
