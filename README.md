@@ -5,7 +5,6 @@ Easily create CRUD endpoints with a given MUX and Database. The perfect package 
 ## Example
 
 ```go
-
 package main
 
 import (
@@ -13,6 +12,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/josebalius/go-crudify"
+	databaseAdapter "github.com/josebalius/go-crudify/adapters/database/gorm"
 	routerAdapter "github.com/josebalius/go-crudify/adapters/router/echo"
 	"github.com/labstack/echo"
 	"github.com/pkg/errors"
@@ -38,7 +38,7 @@ func main() {
 
 	if err := crudify.NewEndpoint(
 		crudify.WithRouter(routerAdapter.NewEchoRouter(e)),
-		crudify.WithDatabase(db),
+		crudify.WithDatabase(databaseAdapter.NewGormAdapter(db, &User{})),
 		crudify.WithModel(&User{}),
 	); err != nil {
 		log.Fatal(err)
@@ -67,6 +67,8 @@ DELETE /users/:id
 - [ ] Introduce adapters for database & support standard lib dbo
 - [ ] Tests
 - [ ] Permission behavior
+- [ ] Instrumentation support
+- [ ] Logging support
 - [ ] Support for middlewares
 - [ ] Improve documentation in code and docs
 - [ ] Your feature! Submit an issue or PR

@@ -32,7 +32,7 @@ func (e *endpoint) createRouterListEndpoint(endpointPath string) {
 	handler := func(ctx router.RouteContext) error {
 		records := e.newModelSlice()
 
-		if err := e.database().Find(records).Error; err != nil {
+		if err := e.database().Find(records); err != nil {
 			return errors.Wrapf(err, "list %s", e.controllerName)
 		}
 
@@ -51,7 +51,7 @@ func (e *endpoint) createRouterPostEndpoint(endpointPath string) {
 			return errors.Wrap(err, "bind json payload to model")
 		}
 
-		if err := e.database().Create(record).Error; err != nil {
+		if err := e.database().Create(record); err != nil {
 			return errors.Wrapf(err, "create %s", e.controllerName)
 		}
 
@@ -68,7 +68,7 @@ func (e *endpoint) createRouterGetEndpoint(endpointPath string) {
 	handler := func(ctx router.RouteContext) error {
 		record := e.newModelPtr()
 
-		if err := e.database().First(record, ctx.Param("id")).Error; err != nil {
+		if err := e.database().First(record, ctx.Param("id")); err != nil {
 			if err == gorm.ErrRecordNotFound {
 				return ctx.NoContent(http.StatusNotFound)
 			}
@@ -97,12 +97,12 @@ func (e *endpoint) createRouterPutEndpoint(endpointPath string) {
 		// Delete any gorm related fields
 		delete(recordMap, "Model")
 
-		if err := e.database().Model(e.model()).Where("id = ?", ctx.Param("id")).Update(recordMap).Error; err != nil {
+		if err := e.database().Update(recordMap, ctx.Param("id")); err != nil {
 			return errors.Wrapf(err, "update %s", e.controllerName)
 		}
 
 		updatedRecord := e.newModelPtr()
-		if err := e.database().First(updatedRecord, ctx.Param("id")).Error; err != nil {
+		if err := e.database().First(updatedRecord, ctx.Param("id")); err != nil {
 			return errors.Wrapf(err, "get %s", e.controllerName)
 		}
 
@@ -117,7 +117,7 @@ func (e *endpoint) createRouterDeleteEndpoint(endpointPath string) {
 	fmt.Println("Creating endpoint: DELETE " + endpointRoute)
 
 	handler := func(ctx router.RouteContext) error {
-		if err := e.database().Where("id = ?", ctx.Param("id")).Delete(e.model()).Error; err != nil {
+		if err := e.database().Delete(ctx.Param("id")); err != nil {
 			return errors.Wrapf(err, "delete %s", e.controllerName)
 		}
 

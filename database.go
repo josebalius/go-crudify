@@ -3,10 +3,10 @@ package crudify
 import (
 	"reflect"
 
-	"github.com/jinzhu/gorm"
+	"github.com/josebalius/go-crudify/adapters/database"
 )
 
-func (e *endpoint) database() *gorm.DB {
+func (e *endpoint) database() database.Database {
 	return e.options.db
 }
 

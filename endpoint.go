@@ -29,7 +29,7 @@ func NewEndpoint(opts ...Option) error {
 	if e.options.controllerName != "" {
 		e.controllerName = e.options.controllerName
 	} else {
-		e.controllerName = e.database().NewScope(e.model()).TableName()
+		e.controllerName = e.database().TableName()
 	}
 
 	e.createRouterEndpoints()
