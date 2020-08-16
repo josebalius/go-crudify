@@ -48,7 +48,7 @@ func main() {
 }
 ```
 
-This create the following endpoints:
+This creates the following endpoints:
 
 ```
 GET /users
