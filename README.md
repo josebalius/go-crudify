@@ -50,6 +50,7 @@ func main() {
 
 ## TODOs
 
+- [ ] Setup go.mod
 - [ ] Cleanup TODOs in the code
 - [ ] Support non-integer IDs from gorm / database
 - [ ] Introduce adapters for router & support standard lib mux
