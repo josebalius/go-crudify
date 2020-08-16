@@ -2,19 +2,19 @@ package crudify
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/labstack/echo"
+	"github.com/josebalius/go-crudify/adapters/router"
 )
 
 type Option func(opts *options) error
 
 type options struct {
-	router         *echo.Echo
+	router         router.Router
 	db             *gorm.DB
 	model          interface{}
 	controllerName string
 }
 
-func WithRouter(router *echo.Echo) Option {
+func WithRouter(router router.Router) Option {
 	return func(opts *options) error {
 		opts.router = router
 		return nil

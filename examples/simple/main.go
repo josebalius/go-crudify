@@ -5,6 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/josebalius/go-crudify"
+	routerAdapter "github.com/josebalius/go-crudify/adapters/router/echo"
 	"github.com/labstack/echo"
 	"github.com/pkg/errors"
 
@@ -28,7 +29,7 @@ func main() {
 	db.AutoMigrate(&User{})
 
 	if err := crudify.NewEndpoint(
-		crudify.WithRouter(e),
+		crudify.WithRouter(routerAdapter.NewEchoRouter(e)),
 		crudify.WithDatabase(db),
 		crudify.WithModel(&User{}),
 	); err != nil {

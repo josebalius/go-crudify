@@ -8,11 +8,11 @@ import (
 
 	"github.com/fatih/structs"
 	"github.com/jinzhu/gorm"
-	"github.com/labstack/echo"
+	"github.com/josebalius/go-crudify/adapters/router"
 	"github.com/pkg/errors"
 )
 
-func (e *endpoint) router() *echo.Echo {
+func (e *endpoint) router() router.Router {
 	return e.options.router
 }
 
@@ -29,7 +29,7 @@ func (e *endpoint) createRouterEndpoints() {
 func (e *endpoint) createRouterListEndpoint(endpointPath string) {
 	fmt.Println("Creating endpoint: GET " + endpointPath)
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx router.RouteContext) error {
 		records := e.newModelSlice()
 
 		if err := e.database().Find(records).Error; err != nil {
@@ -45,7 +45,7 @@ func (e *endpoint) createRouterListEndpoint(endpointPath string) {
 func (e *endpoint) createRouterPostEndpoint(endpointPath string) {
 	fmt.Println("Creating endpoint: POST " + endpointPath)
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx router.RouteContext) error {
 		record := e.newModelPtr()
 		if err := ctx.Bind(record); err != nil {
 			return errors.Wrap(err, "bind json payload to model")
@@ -65,7 +65,7 @@ func (e *endpoint) createRouterGetEndpoint(endpointPath string) {
 	endpointRoute := path.Join(endpointPath, ":id")
 	fmt.Println("Creating endpoint: GET " + endpointRoute)
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx router.RouteContext) error {
 		record := e.newModelPtr()
 
 		if err := e.database().First(record, ctx.Param("id")).Error; err != nil {
@@ -86,7 +86,7 @@ func (e *endpoint) createRouterPutEndpoint(endpointPath string) {
 	endpointRoute := path.Join(endpointPath, ":id")
 	fmt.Println("Creating endpoint: PUT " + endpointRoute)
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx router.RouteContext) error {
 		record := e.newModelPtr()
 		if err := ctx.Bind(record); err != nil {
 			return errors.Wrap(err, "bind json payload to model")
@@ -116,7 +116,7 @@ func (e *endpoint) createRouterDeleteEndpoint(endpointPath string) {
 	endpointRoute := path.Join(endpointPath, ":id")
 	fmt.Println("Creating endpoint: DELETE " + endpointRoute)
 
-	handler := func(ctx echo.Context) error {
+	handler := func(ctx router.RouteContext) error {
 		if err := e.database().Where("id = ?", ctx.Param("id")).Delete(e.model()).Error; err != nil {
 			return errors.Wrapf(err, "delete %s", e.controllerName)
 		}
