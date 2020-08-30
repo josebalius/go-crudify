@@ -38,7 +38,7 @@ func main() {
 
 	if err := crudify.NewEndpoint(
 		crudify.WithRouter(routerAdapter.NewEchoRouter(e)),
-		crudify.WithDatabase(databaseAdapter.NewGormAdapter(db, &User{})),
+		crudify.WithDatabase(databaseAdapter.NewGormAdapter(db)),
 		crudify.WithModel(&User{}),
 	); err != nil {
 		log.Fatal(err)
