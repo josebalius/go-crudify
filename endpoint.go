@@ -26,6 +26,8 @@ func NewEndpoint(opts ...Option) error {
 		return errors.Wrap(err, "validate options")
 	}
 
+	e.database().WithModel(e.Options.Model)
+
 	if e.Options.ControllerName != "" {
 		e.ControllerName = e.Options.ControllerName
 	} else {

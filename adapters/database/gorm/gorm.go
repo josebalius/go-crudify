@@ -10,8 +10,12 @@ type gormAdapter struct {
 	model interface{}
 }
 
-func NewGorm(db *gorm.DB, model interface{}) database.Database {
-	return &gormAdapter{db, model}
+func NewGorm(db *gorm.DB) database.Database {
+	return &gormAdapter{db: db}
+}
+
+func (g *gormAdapter) WithModel(model interface{}) {
+	g.model = model
 }
 
 func (g *gormAdapter) TableName() string {
@@ -31,7 +35,7 @@ func (g *gormAdapter) First(record interface{}, id string) error {
 }
 
 func (g *gormAdapter) Update(record map[string]interface{}, id string) error {
-	return g.db.Model(g.model).Update(record).Where("id = ?", id).Error
+	return g.db.Model(g.model).Where("id = ?", id).Update(record).Error
 }
 
 func (g *gormAdapter) Delete(id string) error {

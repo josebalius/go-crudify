@@ -60,10 +60,10 @@ DELETE /users/:id
 
 ## TODOs
 
-- [ ] Setup go.mod
+- [x] Setup go.mod
 - [ ] Cleanup TODOs in the code
 - [ ] Support non-integer IDs from gorm / database
-- [ ] Introduce adapters for router & support standard lib mux
+- [x] Introduce adapters for router & support standard lib mux
 - [ ] Introduce adapters for database & support standard lib dbo
 - [ ] Tests
 - [ ] Permission behavior

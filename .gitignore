@@ -1,2 +1,3 @@
 examples/simple/simple
-examples/simple/test.db
+examples/simple/http/http
+*.db

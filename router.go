@@ -19,6 +19,8 @@ func (e *Endpoint) router() router.Router {
 func (e *Endpoint) createRouterEndpoints() {
 	endpointPath := fmt.Sprintf("/%s", strings.TrimPrefix(e.ControllerName, "/"))
 
+	e.router().WithEndpointPath(endpointPath)
+
 	e.createRouterListEndpoint(endpointPath)
 	e.createRouterPostEndpoint(endpointPath)
 	e.createRouterGetEndpoint(endpointPath)
@@ -68,7 +70,7 @@ func (e *Endpoint) createRouterGetEndpoint(endpointPath string) {
 	handler := func(ctx router.RouteContext) error {
 		record := e.newModelPtr()
 
-		if err := e.database().First(record, ctx.Param("id")); err != nil {
+		if err := e.database().First(record, ctx.ResourceID()); err != nil {
 			if err == gorm.ErrRecordNotFound {
 				return ctx.NoContent(http.StatusNotFound)
 			}
@@ -97,12 +99,12 @@ func (e *Endpoint) createRouterPutEndpoint(endpointPath string) {
 		// Delete any gorm related fields
 		delete(recordMap, "Model")
 
-		if err := e.database().Update(recordMap, ctx.Param("id")); err != nil {
+		if err := e.database().Update(recordMap, ctx.ResourceID()); err != nil {
 			return errors.Wrapf(err, "update %s", e.ControllerName)
 		}
 
 		updatedRecord := e.newModelPtr()
-		if err := e.database().First(updatedRecord, ctx.Param("id")); err != nil {
+		if err := e.database().First(updatedRecord, ctx.ResourceID()); err != nil {
 			return errors.Wrapf(err, "get %s", e.ControllerName)
 		}
 
@@ -117,7 +119,7 @@ func (e *Endpoint) createRouterDeleteEndpoint(endpointPath string) {
 	fmt.Println("Creating Endpoint: DELETE " + endpointRoute)
 
 	handler := func(ctx router.RouteContext) error {
-		if err := e.database().Delete(ctx.Param("id")); err != nil {
+		if err := e.database().Delete(ctx.ResourceID()); err != nil {
 			return errors.Wrapf(err, "delete %s", e.ControllerName)
 		}
 

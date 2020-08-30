@@ -13,26 +13,30 @@ func NewEcho(e *echo.Echo) router.Router {
 	return &echoRouter{e}
 }
 
+func (e *echoRouter) WithEndpointPath(endpointPath string) {
+	// no-op
+}
+
 func (e *echoRouter) GET(path string, handler router.RouteHandler) {
 	e.echo.GET(path, func(ctx echo.Context) error {
-		return handler(ctx)
+		return handler(newContext(ctx))
 	})
 }
 
 func (e *echoRouter) POST(path string, handler router.RouteHandler) {
 	e.echo.POST(path, func(ctx echo.Context) error {
-		return handler(ctx)
+		return handler(newContext(ctx))
 	})
 }
 
 func (e *echoRouter) PUT(path string, handler router.RouteHandler) {
 	e.echo.PUT(path, func(ctx echo.Context) error {
-		return handler(ctx)
+		return handler(newContext(ctx))
 	})
 }
 
 func (e *echoRouter) DELETE(path string, handler router.RouteHandler) {
 	e.echo.DELETE(path, func(ctx echo.Context) error {
-		return handler(ctx)
+		return handler(newContext(ctx))
 	})
 }

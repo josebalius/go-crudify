@@ -1,6 +1,8 @@
 package database
 
 type Database interface {
+	WithModel(model interface{})
+
 	TableName() string
 	Find(records interface{}) error
 	Create(record interface{}) error
